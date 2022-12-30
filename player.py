@@ -1,11 +1,6 @@
-from config import width 
+from config import width
 import pygame
 from bullet import Bullet
-
-class Enemy:
-    pass
-
-
 
 class Player:
     def __init__(self, x):
