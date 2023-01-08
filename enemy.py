@@ -6,7 +6,7 @@ class EnemyBullet:
     def __init__(self, x,y):
         self.x = x
         self.y = y
-        self.speed = 4
+        self.speed = 6
         self.width = 6
         self.height = 16
         self.delete = False
@@ -40,15 +40,16 @@ class Enemies:
         self.height = 144 * (enemies_y-1)+50
         self.width = (width-2*padding)/enemies_x*(enemies_x-1) + 50
         self.speed = [-0.5,25]
-        self.bullet = None 
+        self.bullets = []
+        self.timer = 100
 
     def draw(self,ctx):
         # pygame.draw.rect(ctx,(0,200,200),(self.x,self.y,self.width,self.height))   
         for enemy_col in self.enemies:
             for enemy in enemy_col:
                 enemy.draw(ctx) 
-        if self.bullet is not None:
-            self.bullet.draw(ctx)
+        for bullet in self.bullets:
+            bullet.draw(ctx)
         
 
     def update(self):
@@ -61,17 +62,19 @@ class Enemies:
                 if self.x <= 0 or self.x+self.width >= width:
                     enemy.update(self.speed[0],self.speed[1])
                 else: enemy.update(self.speed[0],0)
-        self.shoot()
-        if self.bullet is not None:
-            self.bullet.update()
-            if self.bullet.delete:
-                self.bullet = None
+        self.timer -= 1
+        if self.timer == 0:
+            self.shoot()
+            self.timer = 100
+        for bullet in self.bullets:
+            bullet.update()
+            if bullet.delete:
+                self.bullets.remove(bullet)
 
     def shoot(self):
-        if self.bullet is None:
-            i = random.randint(0,len(self.enemies)-1)
-            enemy = self.enemies[i][len(self.enemies[i])-1]
-            self.bullet = EnemyBullet(enemy.x+(enemy.width/2),enemy.y+(enemy.height))
+        i = random.randint(0,len(self.enemies)-1)
+        enemy = self.enemies[i][len(self.enemies[i])-1]
+        self.bullets.append(EnemyBullet(enemy.x+(enemy.width/2),enemy.y+(enemy.height)))
         
 
 class Enemy:

@@ -16,9 +16,10 @@ class Player:
     def update(self): 
         if self.game.enemies.y + self.game.enemies.height >= self.y:
             self.game.gameover = True 
-        if self.game.enemies.bullet is not None and (self.game.enemies.bullet.player_collision(self)):
-            self.game.gameover = True
-            self.game.enemies.bullet = None
+        for bullet in self.game.enemies.bullets:
+            if (bullet.player_collision(self)):
+                self.game.gameover = True
+                self.game.enemies.bullets.remove(bullet)
         if self.bullet is not None:
             self.bullet.update()  
             for enemies_col in self.game.enemies.enemies:
