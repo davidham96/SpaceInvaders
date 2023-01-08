@@ -18,7 +18,6 @@ class Bullet:
         pygame.draw.rect(ctx,(100,100,200),(self.x,self.y,self.width,self.height))
 
     def check_collision(self, enemy):
-        if (self.x + self.width) >= enemy.x and self.x <= (enemy.x + enemy.width):
-            if (self.y <= enemy.y + enemy.height) and (self.y + self.height >= enemy.y):
-                return True
-        return False
+        if (self.x + self.width) >= enemy.x or self.x <= (enemy.x + enemy.width):
+            if (self.y == enemy.y + enemy.height):
+                
